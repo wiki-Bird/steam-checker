@@ -38,6 +38,8 @@ func main() {
 	var games []Game
 	var macGames []Game
 	var linuxGames []Game
+	var bothGames []Game
+	var windowsGames []Game
 	for id, game := range gamesMap {
 		game.ID = id
 		games = append(games, game)
@@ -48,11 +50,28 @@ func main() {
 		if game.Linux && !game.Mac && !game.Windows {
 			linuxGames = append(linuxGames, game)
 		}
+		if game.Linux && game.Mac && !game.Windows {
+			bothGames = append(bothGames, game)
+		}
+		if game.Windows && !game.Linux && !game.Mac {
+			windowsGames = append(windowsGames, game)
+		}
 
 		fmt.Printf("Processed game ^-^: %s (ID: %s)\n", game.Name, game.ID)
 	}
 
 	fmt.Printf("\nProcessed %d games total\n", len(games))
-	fmt.Printf("Processed %d mac exclusive games\n", len(macGames))
-	fmt.Printf("Processed %d linux exclusive games\n", len(linuxGames))
+	fmt.Printf("\nProcessed %d mac exclusive games\n", len(macGames))
+	for id, game := range macGames {
+		fmt.Printf("MacOS %d: %s %s\n", id, game.ID, game.Name)
+	}
+	fmt.Printf("\nProcessed %d linux exclusive games\n", len(linuxGames))
+	for id, game := range linuxGames {
+		fmt.Printf("Linux %d: %s %s\n", id, game.ID, game.Name)
+	}
+	fmt.Printf("\nProcessed %d games that are only on both linux and mac\n", len(bothGames))
+	for id, game := range bothGames {
+		fmt.Printf("Both %d: %s %s\n", id, game.ID, game.Name)
+	}
+	fmt.Printf("\nProcessed %d windows exclusive games\n", len(windowsGames))
 }
